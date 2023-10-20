@@ -15,6 +15,12 @@ const validateSignUp = [
     .isString()
     .withMessage("Last name should be string"),
 
+    body("password")
+    .notEmpty()
+    .withMessage("Password required")
+    .isString()
+    .withMessage("Password be string"),
+
     body("dob")
     .notEmpty()
     .withMessage("Last name required")
@@ -36,4 +42,31 @@ const validateSignUp = [
     .withMessage("Last name should be string"),
 ]
 
-module.exports = { validateSignUp }
+const validateLogin = [
+
+    body("email")
+    .notEmpty()
+    .withMessage("Email required")
+    .isEmail()
+    .withMessage('Provide Valid Email')
+    .isString()
+    .withMessage("Email be string"),
+
+    body("password")
+    .notEmpty()
+    .withMessage("Password required")
+    .isString()
+    .withMessage("Password be string"),
+]
+
+
+const validateCreateLeague = [
+
+    body("league_name")
+    .notEmpty()
+    .withMessage("League Name required")
+    .isString()
+    .withMessage("League Name be string"),
+]
+
+module.exports = { validateSignUp, validateLogin, validateCreateLeague }

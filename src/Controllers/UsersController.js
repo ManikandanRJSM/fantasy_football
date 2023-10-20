@@ -2,8 +2,10 @@ const { genPass, checkUserEmail }   = require('../Utils/helper')
 const asynHandler   = require('express-async-handler')
 const userModel     = require('../Models/User')
 const {validationResult} = require('express-validator');
-const { accountActivationMailer } = require('../Utils/sendMail');
+const { sendMailEmmiter } = require('../Utils/sendMail');
+const { generateJWT } = require('../Utils/helper')
 const mongoose = require('mongoose')
+const bcrypt = require('bcrypt')
 
 
 const signUp = asynHandler( async (request, response, error) => {
@@ -29,7 +31,8 @@ const signUp = asynHandler( async (request, response, error) => {
         })
         
         if(insertUser){
-            await accountActivationMailer(insertUser)
+            
+            sendMailEmmiter.emit('accountActivationMailer', insertUser)
             return response.status(200).json('User created check the email for verfication.')
         }
         else{
@@ -55,4 +58,22 @@ const accountActivation = asynHandler(async (request, response) => {
 
 })
 
-module.exports = { signUp, accountActivation }
+const userLogin = asynHandler( async (req, res) => {
+
+    try {
+        const { email, password } = req.body
+        const user = await userModel.findOne({email : email})
+        const checkPwd = await bcrypt.compare(password, user.password)
+        if(!user || !checkPwd){
+            return res.status(400).json({status_code : 0, message : 'Email or password not found'})
+        }
+        const token = await generateJWT(user._id, 'User')
+        return await res.status(200).json({status_code : 1, message : 'Logged in', token : token})
+    } catch (error) {
+        res.status(400)
+        throw new Error(error)
+    }
+    
+})
+
+module.exports = { signUp, accountActivation, userLogin }
