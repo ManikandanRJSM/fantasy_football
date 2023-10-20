@@ -1,6 +1,7 @@
 const express = require('express')
 const route = express()
 const { signUp, accountActivation } = require('../Controllers/UsersController')
+const { stripePayments } = require('../Controllers/PaymentsController')
 const { validateSignUp } = require('../Middleware//Validators/apiValidator')
 express.Router()
 
@@ -14,5 +15,7 @@ route.get('/', (req, res) => {
 route.post('/signUp', validateSignUp, signUp)
 
 route.get('/activateAccount/:id', accountActivation)
+
+route.get('/stripe-payments', stripePayments)
 
 module.exports = route
