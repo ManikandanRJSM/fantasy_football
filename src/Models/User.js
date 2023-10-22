@@ -21,7 +21,7 @@ const userSchema = mongoose.Schema({
     },
     dob : {
         type : Date,
-        required : [true, 'Please date of birth'],
+        // required : [true, 'Please enter date of birth'],
     },
     isVerified : {
         type : Boolean,

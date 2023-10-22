@@ -23,7 +23,7 @@ const validateSignUp = [
 
     body("dob")
     .notEmpty()
-    .withMessage("Last name required")
+    .withMessage("dob required")
     .toDate()
     .withMessage("Enter Valid Date"),
 
