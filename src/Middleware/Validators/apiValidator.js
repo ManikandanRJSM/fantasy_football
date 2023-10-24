@@ -1,4 +1,4 @@
-const {check, validationResult, body} = require('express-validator');
+const {check, validationResult, body, param} = require('express-validator');
 const asynHandler = require('express-async-handler')
 const userModel = require('../../Models/User')
 
@@ -69,4 +69,24 @@ const validateCreateLeague = [
     .withMessage("League Name be string"),
 ]
 
-module.exports = { validateSignUp, validateLogin, validateCreateLeague }
+
+const validatePlayersAdd = [
+
+    body("league_name")
+    .notEmpty()
+    .withMessage("League Name required")
+    .isString()
+    .withMessage("League Name be string"),
+]
+
+
+const validatePlayersLists = [
+
+    param("position")
+    .notEmpty()
+    .withMessage("player position required")
+    .isString()
+    .withMessage("position must be string"),
+]
+
+module.exports = { validateSignUp, validateLogin, validateCreateLeague, validatePlayersLists, validatePlayersAdd }

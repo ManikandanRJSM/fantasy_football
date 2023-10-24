@@ -68,7 +68,7 @@ const userLogin = asynHandler( async (req, res) => {
             return res.status(400).json({status_code : 0, message : 'Email or password not found'})
         }
         const token = await generateJWT(user._id, 'User')
-        return await res.status(200).json({status_code : 1, message : 'Logged in', token : token})
+        return res.status(200).json({status_code : 1, message : 'Logged in', token : token})
     } catch (error) {
         res.status(400)
         throw new Error(error)
