@@ -11,7 +11,8 @@ const userAuth = asynHandler ( async (req, res, next) => {
             const token = req.headers.authorization.split(' ')[1]
             try {
                 const verify = await jwt.verify(token, process.env.JWT_SECRET)
-                req.userData = await userModel.findOne({id : verify.id}).select('-password')
+                req.authUser = await userModel.findOne({_id : verify.id}).select('-password')
+                // console.log(userData)
                 next()
             } catch (error) {
                 return res.status(401).json({status_code : 0, message : 'Request Not Authorized'})

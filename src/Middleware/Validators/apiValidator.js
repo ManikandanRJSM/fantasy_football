@@ -72,11 +72,17 @@ const validateCreateLeague = [
 
 const validatePlayersAdd = [
 
-    body("league_name")
+    body("position")
     .notEmpty()
     .withMessage("League Name required")
     .isString()
     .withMessage("League Name be string"),
+
+    body("playerId")
+    .notEmpty()
+    .withMessage("Player Id required")
+    .isString()
+    .withMessage("Player Id must be string"),
 ]
 
 

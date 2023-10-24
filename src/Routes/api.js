@@ -2,7 +2,7 @@ const express = require('express')
 const route = express()
 const { signUp, accountActivation, userLogin } = require('../Controllers/UsersController')
 const { creatLeague } = require('../Controllers/LeagueController')
-const { createTeam, updateTeam, showPlayers } = require('../Controllers/TeamsController')
+const { createTeam, updateTeam, showPlayers, addPlayer } = require('../Controllers/TeamsController')
 const { fetchPlayers } = require('../Controllers/ImportController')
 const { validateSignUp, validateLogin, validateCreateLeague, validatePlayersLists, validatePlayersAdd } = require('../Middleware//Validators/apiValidator')
 const { userAuth } = require('../Middleware/userAuth')
@@ -26,7 +26,7 @@ route.post('/creatLeague', userAuth, validateCreateLeague, creatLeague)
 
 route.get('/showPlayers', userAuth, validatePlayersLists, showPlayers)
 
-route.get('/addPlayer', userAuth, validatePlayersAdd, showPlayers)
+route.post('/addPlayer', userAuth, addPlayer)
 
 route.post('/createTeam', userAuth, createTeam)
 

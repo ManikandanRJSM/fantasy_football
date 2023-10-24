@@ -2,10 +2,11 @@ const jwt           = require('jsonwebtoken')
 const asynHandler   = require('express-async-handler')
 const bcrypt        = require('bcrypt')
 const userModel     = require('../Models/User')
+const playersModel = require('../Models/Players')
 
 const generateJWT = asynHandler( async (payload, user_type = null) => {
     let user = user_type;
-    if(user_type){
+    if(!user_type){
         user = 'Admin'
     }else{
         user = 'User'
@@ -26,5 +27,25 @@ const checkUserEmail = asynHandler( async (email) => {
 })
 
 
+const playersHelper = asynHandler( async (playerIds, postion) => {
+    let maxPlayers = 3
+    if(postion === "GKP"){
+        maxPlayers = 2
+    }
+    const playerMap = playerIds.map((arr) => {
+        return arr.playerId
+    })
+    const plData = await playersModel.find({_id : { "$in" :  playerMap}})
+    console.log(plData)
+    
+    return {
+        status : true,
+        message : `More than ${maxPlayers} Arsenal players are not allowed`,
+        data : plData
+        
+    }
+})
 
-module.exports = { generateJWT, genPass, checkUserEmail }
+
+
+module.exports = { generateJWT, genPass, checkUserEmail, playersHelper }
